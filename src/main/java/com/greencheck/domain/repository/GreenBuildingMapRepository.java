@@ -84,4 +84,33 @@ public interface GreenBuildingMapRepository extends JpaRepository<GreenBuildingM
             "where g.certYear is not null " +
             "order by g.certYear desc")
     List<Integer> findDistinctCertYears();
+
+
+    //검색부분
+    interface SearchRow {
+        Long getId();
+        String getName();
+        String getAddress();
+        BigDecimal getLat();
+        BigDecimal getLng();
+    }
+
+    // 이름/주소 LIKE 검색 (좌표가 있는 데이터만)
+    @Query("""
+        select g.id as id, g.name as name, g.address as address, g.latitude as lat, g.longitude as lng
+        from GreenBuildingMap g
+        where ( :q is null or :q = '' 
+                or lower(g.name) like lower(concat('%', :q, '%'))
+                or lower(g.address) like lower(concat('%', :q, '%')) )
+          and g.latitude is not null and g.longitude is not null
+        order by 
+          case 
+            when lower(g.name)    like lower(concat(:q, '%')) then 0
+            when lower(g.name)    like lower(concat('%', :q, '%')) then 1
+            when lower(g.address) like lower(concat(:q, '%')) then 2
+            else 3
+          end,
+          g.updatedAt desc
+        """)
+    Page<SearchRow> searchByNameOrAddress(@Param("q") String q, Pageable pageable);
 }

@@ -10,6 +10,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.*;
 
+import com.greencheck.dto.ItemsResponse;
+import com.greencheck.dto.SearchItemDto;
+import java.math.BigDecimal;
+
 @Service
 @RequiredArgsConstructor
 public class MapQueryService {
@@ -88,4 +92,38 @@ public class MapQueryService {
         return res;
     }
 
+    //텍스트 검색
+    public ItemsResponse<SearchItemDto> searchByText(String q, Integer limit) {
+        String keyword = (q == null) ? "" : q.trim();
+        int max = (limit == null) ? 10 : Math.max(1, Math.min(limit, 20)); // 1~20, 기본 10
+
+        var page = repo.searchByNameOrAddress(keyword, PageRequest.of(0, max));
+
+        List<SearchItemDto> items = page.getContent().stream()
+                .map(r -> new SearchItemDto(
+                        r.getId(),
+                        buildLabel(r.getName(), r.getAddress()),
+                        nvl(r.getName()),
+                        nvl(r.getAddress()),
+                        toDouble(r.getLat()),
+                        toDouble(r.getLng())
+                ))
+                .toList();
+
+        return new ItemsResponse<>(items);
+    }
+
+    private static String nvl(String s) { return s == null ? "" : s; }
+    private static Double toDouble(BigDecimal bd) { return bd == null ? null : bd.doubleValue(); }
+
+    private static String buildLabel(String name, String address) {
+        StringBuilder sb = new StringBuilder();
+        if (name != null && !name.isBlank()) sb.append(name.trim());
+        if (address != null && !address.isBlank()) {
+            if (sb.length() > 0) sb.append(" | ");
+            sb.append(address.trim());
+        }
+        // 둘 다 비어있다면 id만이라도 넣고 싶다면 여기서 처리할 수 있음
+        return sb.toString();
+    }
 }

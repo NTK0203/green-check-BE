@@ -1,8 +1,13 @@
 package com.greencheck.controller;
 
+import com.greencheck.dto.ItemsResponse;
 import com.greencheck.dto.MarkerDto;
 import com.greencheck.dto.PagedResponse;
+import com.greencheck.dto.SearchItemDto;
 import com.greencheck.service.MapQueryService;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +35,15 @@ public class MapController {
             @RequestParam(defaultValue = "500") Integer size
     ) {
         return svc.search(lat, lng, radiusMeters, q, gradeCode, useCategory, certYear, page, size);
+    }
+
+    //검색
+    @GetMapping("/green-buildings/search")
+    public ItemsResponse<SearchItemDto> searchByText(
+            @RequestParam @NotBlank String q,
+            @RequestParam(defaultValue = "10") @Min(1) @Max(20) Integer limit
+    ) {
+        return svc.searchByText(q, limit);
     }
 
     // 필터 목록 제공
