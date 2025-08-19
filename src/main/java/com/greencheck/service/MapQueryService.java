@@ -14,6 +14,11 @@ import com.greencheck.dto.ItemsResponse;
 import com.greencheck.dto.SearchItemDto;
 import java.math.BigDecimal;
 
+import com.greencheck.dto.BuildingDetailDto;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+import java.math.BigDecimal;
+
 @Service
 @RequiredArgsConstructor
 public class MapQueryService {
@@ -125,5 +130,26 @@ public class MapQueryService {
         }
         // 둘 다 비어있다면 id만이라도 넣고 싶다면 여기서 처리할 수 있음
         return sb.toString();
+    }
+
+    // 녹색 건축물 상세 조회
+    public BuildingDetailDto getDetail(Long id) {
+        var g = repo.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Building not found: " + id));
+
+        return new BuildingDetailDto(
+                g.getId(),
+                g.getName(),
+                g.getAddress(),
+                toDouble(g.getLatitude()),
+                toDouble(g.getLongitude()),
+                g.getGradeCode(),
+                g.getUseCategory(),
+                g.getCertYear(),
+                g.getFloorArea(),
+                g.isPublic(),
+                g.getCertAgency(),
+                g.getUpdatedAt()
+        );
     }
 }

@@ -1,9 +1,6 @@
 package com.greencheck.controller;
 
-import com.greencheck.dto.ItemsResponse;
-import com.greencheck.dto.MarkerDto;
-import com.greencheck.dto.PagedResponse;
-import com.greencheck.dto.SearchItemDto;
+import com.greencheck.dto.*;
 import com.greencheck.service.MapQueryService;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -50,5 +47,11 @@ public class MapController {
     @GetMapping("/green-buildings/filters")
     public Map<String, Object> filters() {
         return svc.getFilters();
+    }
+
+    // 상세조회
+    @GetMapping("/green-buildings/{id}")
+    public BuildingDetailDto detail(@PathVariable Long id) {
+        return svc.getDetail(id);
     }
 }
