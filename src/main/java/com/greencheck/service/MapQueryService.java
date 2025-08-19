@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -37,4 +38,54 @@ public class MapQueryService {
     }
 
     private static String emptyToNull(String s) { return (s == null || s.isBlank()) ? null : s; }
+
+    //filter
+    private static final Map<String, String> GRADE_LABELS = Map.of(
+            "EXCELLENT",  "최우수",
+            "VERY_GOOD",  "우수",
+            "GOOD",       "우량",
+            "BASIC",      "일반"
+    );
+
+    private static final Map<String, String> USE_LABELS = Map.of(
+            "EXISTING_NON_RESIDENTIAL", "기존비주거용",
+            "EXISTING_RESIDENTIAL",     "기존주거용",
+            "MIXED_USE",                "복합건축물",
+            "NEW_NON_RESIDENTIAL",      "신축비주거용",
+            "NEW_RESIDENTIAL",          "신축주거용"
+    );
+
+    public Map<String, Object> getFilters() {
+        // DB에서 distinct 값 조회
+        List<String> gradeCodes = repo.findDistinctGradeCodes();
+        List<String> useCategories = repo.findDistinctUseCategories();
+        List<Integer> years = repo.findDistinctCertYears(); // desc 정렬되어 반환 가정
+
+        // 코드/라벨 페어로 변환
+        List<Map<String, String>> gradeList = gradeCodes.stream()
+                .filter(Objects::nonNull)
+                .filter(s -> !s.isBlank())
+                .map(code -> Map.of(
+                        "code", code,
+                        "label", GRADE_LABELS.getOrDefault(code, code)
+                ))
+                .toList();
+
+        List<Map<String, String>> useList = useCategories.stream()
+                .filter(Objects::nonNull)
+                .filter(s -> !s.isBlank())
+                .map(code -> Map.of(
+                        "code", code,
+                        "label", USE_LABELS.getOrDefault(code, code)
+                ))
+                .toList();
+
+        Map<String, Object> res = new LinkedHashMap<>();
+        res.put("gradeCode", gradeList);
+        res.put("useCategory", useList);
+        res.put("years", years);
+
+        return res;
+    }
+
 }

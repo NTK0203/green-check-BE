@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/map")
 @RequiredArgsConstructor
@@ -28,5 +30,11 @@ public class MapController {
             @RequestParam(defaultValue = "500") Integer size
     ) {
         return svc.search(lat, lng, radiusMeters, q, gradeCode, useCategory, certYear, page, size);
+    }
+
+    // 필터 목록 제공
+    @GetMapping("/green-buildings/filters")
+    public Map<String, Object> filters() {
+        return svc.getFilters();
     }
 }

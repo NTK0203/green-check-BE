@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.List;
 
 public interface GreenBuildingMapRepository extends JpaRepository<GreenBuildingMap, Long> {
 
@@ -65,4 +66,22 @@ public interface GreenBuildingMapRepository extends JpaRepository<GreenBuildingM
             @Param("certYear") Integer certYear,
             Pageable pageable
     );
+
+    //등급 distinct
+    @Query("select distinct g.gradeCode from GreenBuildingMap g " +
+            "where g.gradeCode is not null and g.gradeCode <> '' " +
+            "order by g.gradeCode asc")
+    List<String> findDistinctGradeCodes();
+
+    //용도 distinct
+    @Query("select distinct g.useCategory from GreenBuildingMap g " +
+            "where g.useCategory is not null and g.useCategory <> '' " +
+            "order by g.useCategory asc")
+    List<String> findDistinctUseCategories();
+
+    //연도 distinct (내림차순)
+    @Query("select distinct g.certYear from GreenBuildingMap g " +
+            "where g.certYear is not null " +
+            "order by g.certYear desc")
+    List<Integer> findDistinctCertYears();
 }
