@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 public class QuizQuestionMessage {
 
     @Id
-    @Column(name = "question_id")
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
