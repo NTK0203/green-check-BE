@@ -1,4 +1,3 @@
-// KakaoGeocodingClient.java
 package com.greencheck.infra.geo;
 
 import jakarta.annotation.PostConstruct;
@@ -8,7 +7,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;   // ✅ 추가 import
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.Duration;
 import java.util.Map;
