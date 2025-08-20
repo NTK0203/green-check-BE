@@ -23,12 +23,9 @@ public class ScoreBand {
     @Column(name = "max_score", nullable = false)
     private int maxScore;
 
-    @Column(name = "mid_score", nullable = false)
-    private int midScore;
-
     @Column(nullable = false, length = 50)
     private String label;
 
-    @OneToMany(mappedBy = "scoreBand", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ScoreBandSuggestion> suggestions = new ArrayList<>();
+    @Column(nullable = false, length = 255)
+    private String description;
 }
