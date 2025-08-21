@@ -37,6 +37,7 @@ dependencies {
     runtimeOnly   'com.mysql:mysql-connector-j'
     //엑셀
     implementation 'org.apache.poi:poi-ooxml:5.2.5'
+    //env
     implementation 'me.paulschwarz:spring-dotenv:4.0.0'
 }
 
