@@ -17,6 +17,12 @@ public interface GreenBuildingMapRepository extends JpaRepository<GreenBuildingM
         BigDecimal getLat();
         BigDecimal getLng();
         Double getDistance();
+
+        String getName();
+        String getAddress();
+        String getUseCategory();
+        Integer getCertYear();
+        String getGradeCode();
     }
 
     Optional<GreenBuildingMap> findFirstByNameAndAddress(String name, String address);
@@ -29,16 +35,21 @@ public interface GreenBuildingMapRepository extends JpaRepository<GreenBuildingM
           (6371000 * ACOS(LEAST(1.0,
              COS(RADIANS(:lat)) * COS(RADIANS(gb.latitude)) * COS(RADIANS(gb.longitude) - RADIANS(:lng)) +
              SIN(RADIANS(:lat)) * SIN(RADIANS(gb.latitude))
-          ))) AS distance
-        FROM green_building_map gb
-        WHERE gb.latitude IS NOT NULL AND gb.longitude IS NOT NULL
-          AND (:q IS NULL OR gb.name LIKE CONCAT('%', :q, '%') OR gb.address LIKE CONCAT('%', :q, '%'))
-          AND (:gradeCode IS NULL OR gb.grade_code   = :gradeCode)
-          AND (:useCategory IS NULL OR gb.use_category = :useCategory)
-          AND (:certYear IS NULL OR gb.cert_year     = :certYear)
-        HAVING distance <= :radius
-        ORDER BY distance ASC
-        """,
+          ))) AS distance,
+            gb.name         AS name,
+                      gb.address      AS address,
+                      gb.use_category AS useCategory,
+                      gb.cert_year    AS certYear,
+                      gb.grade_code   AS gradeCode
+                    FROM green_building_map gb
+                    WHERE gb.latitude IS NOT NULL AND gb.longitude IS NOT NULL
+                      AND (:q IS NULL OR gb.name LIKE CONCAT('%', :q, '%') OR gb.address LIKE CONCAT('%', :q, '%'))
+                      AND (:gradeCode IS NULL OR gb.grade_code   = :gradeCode)
+                      AND (:useCategory IS NULL OR gb.use_category = :useCategory)
+                      AND (:certYear IS NULL OR gb.cert_year     = :certYear)
+                    HAVING distance <= :radius
+                    ORDER BY distance ASC
+                    """,
             countQuery = """
         SELECT COUNT(*) FROM (
           SELECT 

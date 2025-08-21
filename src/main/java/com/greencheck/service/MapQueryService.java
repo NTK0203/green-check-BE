@@ -40,7 +40,18 @@ public class MapQueryService {
         );
 
         List<MarkerDto> items = result.getContent().stream()
-                .map(row -> new MarkerDto(row.getId(), row.getLat(), row.getLng(), row.getDistance()))
+                .map(row -> new MarkerDto(
+                        row.getId(),
+                        row.getLat(),
+                        row.getLng(),
+                        row.getDistance(),
+
+                        row.getName(),
+                        row.getAddress(),
+                        row.getUseCategory(),
+                        row.getCertYear(),
+                        row.getGradeCode()
+                ))
                 .toList();
 
         return new PagedResponse<>(p, s, result.getTotalElements(), items);
