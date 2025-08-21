@@ -6,5 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface RegionRepository extends JpaRepository<Region, String> {
+    Optional<Region> findByRegionCode(String regionCode);
     Optional<Region> findByName(String name);
+    Optional<Region> findFirstByName(String name);     // 이름으로 우선 매칭 시 사용 가능
 }
