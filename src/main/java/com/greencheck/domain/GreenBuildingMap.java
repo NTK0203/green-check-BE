@@ -2,6 +2,7 @@ package com.greencheck.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "green_building_map")
 @Getter
+@Setter
 @NoArgsConstructor
 public class GreenBuildingMap {
 

@@ -41,3 +41,8 @@ out/
 /src/main/resources/application.yml
 /src/main/resources/application-*.properties # 프로파일별 설정 파일도 포함
 /src/main/resources/application-*.yml      # 프로파일별 설정 파일도 포함
+
+# env secrets (ignore)
+.env
+*.env
+.env.*

@@ -3,6 +3,8 @@ package com.greencheck.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +27,19 @@ public class Region {
     @Column(length = 10)
     private String level;
 
+    //경도, 위도 추가
+    @Column(precision = 9, scale = 6)
+    private BigDecimal latitude;
+
+    @Column(precision = 9, scale = 6)
+    private BigDecimal longitude;
+
     @OneToMany(mappedBy = "region", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CarbonEmission> carbonEmissions = new ArrayList<>();
+
+    public void setCenter(BigDecimal lat, BigDecimal lng) {
+        this.latitude = lat;
+        this.longitude = lng;
+    }
+
 }
