@@ -4,7 +4,10 @@ import com.greencheck.dto.EmissionKrResponse;
 import com.greencheck.service.EmissionMapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.greencheck.dto.EmissionKrSeoulResponse;
+import com.greencheck.service.MapEmissionV2Service;
 
 @RestController
 @RequestMapping("/map/emissions")
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class MapEmissionController {
 
     private final EmissionMapService service;
+    private final MapEmissionV2Service v2Service;
 
     //전국
     @GetMapping("/kr")
@@ -29,5 +33,16 @@ public class MapEmissionController {
             @RequestParam(required = false) Integer limit
     ) {
         return service.getGgEmissions(year, limit);
+    }
+
+    //서울
+    @GetMapping("/seoul")
+    public ResponseEntity<EmissionKrSeoulResponse> seoulV2(
+            @RequestParam String year,
+            @RequestParam String monthRange,
+            @RequestParam(defaultValue = "sum") String state,
+            @RequestParam(required = false) Integer limit
+    ) {
+        return ResponseEntity.ok(v2Service.getSeoul(year, monthRange, state, limit));
     }
 }
