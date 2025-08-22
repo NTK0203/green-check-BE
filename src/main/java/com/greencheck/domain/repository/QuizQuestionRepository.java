@@ -1,4 +1,4 @@
-package com.greencheck.repository;
+package com.greencheck.domain.repository;
 
 import com.greencheck.domain.enums.SurveyMode;
 import com.greencheck.domain.QuizQuestion;

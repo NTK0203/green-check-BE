@@ -1,4 +1,4 @@
-package com.greencheck.repository;
+package com.greencheck.domain.repository;
 
 import com.greencheck.domain.ScoreBand;
 import org.springframework.data.jpa.repository.JpaRepository;
