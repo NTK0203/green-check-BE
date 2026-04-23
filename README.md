@@ -7,6 +7,7 @@
 - **개발 기간:** 2025.08.16 ~ 2025.08.23
 - **팀 구성:** 5인 (Back-End 2인, Front-End 2인, Design 1인)
 - **주요 성과:** 🏆 해커톤 우수상 수상
+- **Report:** [🔗 Notion 상세 보고서 바로가기](https://www.notion.so/1e2a37f5177d822199e9018e210428c0?p=a0ea37f5177d82c2968601aff2a8eeb4&pm=c)
 
 
 ## 🛠️ Tech Stacks
